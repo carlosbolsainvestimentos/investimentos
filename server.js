@@ -90,18 +90,16 @@ app.post('/comparison', async (req, res) => {
     const cotacao = await fetchDollarRate();
 
     const results = platforms.map((p) => {
-      // Exemplo simples usando p.spread e p.iof (genérico)
-      // Se quiser usar p.spreadBuy, p.spreadSell, etc., aqui também pode
-      const cotacaoAjustada = cotacao * (1 + p.spread);
-      const valorIOF = valor * p.iof;
+      const cotacaoAjustada = cotacao * (1 + p.spreadBuy);
+      const valorIOF = valor * p.iofBuy;
       const valorDisponivel = valor - valorIOF;
       const dolaresComIOF = valorDisponivel / cotacaoAjustada;
-
+    
       return {
         name: p.name,
         cotacaoAjustada: cotacaoAjustada.toFixed(4),
         valorIOF: valorIOF.toFixed(2),
-        dolaresComIOF: dolaresComIOF.toFixed(2)
+        dolaresComprados: dolaresComIOF.toFixed(2)
       };
     });
 
