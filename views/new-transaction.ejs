@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nova Transação</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body class="container my-4">
+    <h1>Nova Transação</h1>
+    <form action="/transactions" method="POST" class="row gy-3">
+      <div class="col-12">
+        <label for="type" class="form-label">Tipo (Compra ou Venda)</label>
+        <select name="type" id="type" class="form-select" required>
+          <option value="buy">Compra</option>
+          <option value="sell">Venda</option>
+        </select>
+      </div>
+
+      <!-- Novo: Selecionar a Plataforma -->
+      <div class="col-12">
+        <label for="platform" class="form-label">Plataforma</label>
+        <select name="platform" id="platform" class="form-select" required>
+        <% platforms.forEach(p => { %>
+            <option value="<%= p.name %>"><%= p.name %></option>
+            <% }) %>
+        </select>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="usd_amount" class="form-label">Quantidade (USD)</label>
+        <input
+          type="number"
+          step="0.01"
+          class="form-control"
+          id="usd_amount"
+          name="usd_amount"
+          required
+        />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="brl_rate" class="form-label">
+          Cotação Atual (R$/USD)
+        </label>
+        <input
+          type="number"
+          step="0.0001"
+          class="form-control"
+          id="brl_rate"
+          name="brl_rate"
+          value="<%= currentRate.toFixed(4) %>"
+          readonly
+        />
+      </div>
+
+      <!-- Campo Fees podemos deixar "Calculado Automaticamente"? 
+           ou permitir a pessoa alterar se quiser? 
+           Abaixo, deixo como "oculto" para simplificar a UX, 
+           mas você pode exibir se quiser. -->
+      <input
+        type="hidden"
+        id="fees"
+        name="fees"
+        value="0"
+      />
+
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+        <a href="/transactions" class="btn btn-secondary">Voltar</a>
+      </div>
+    </form>
+  </body>
+</html>
